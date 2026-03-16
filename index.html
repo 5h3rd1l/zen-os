@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZEN-OS — Obsidian Dashboard</title>
+<title>ZEN-OS — Your Obsidian Command Center</title>
+<meta name="description" content="A professional Obsidian dashboard with Google Classroom sync, AI assistant, CTF tracker, and quick links — all in a single note.">
+<meta property="og:title" content="ZEN-OS — Your Obsidian Command Center">
+<meta property="og:description" content="Google Classroom sync, AI assistant, CTF tracker and more — all in one Obsidian note. Free download.">
+<meta property="og:image" content="https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/1.jpeg">
+<meta property="og:url" content="https://5h3rd1l.github.io/zen-os/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ZEN-OS — Your Obsidian Command Center">
+<meta name="twitter:description" content="Google Classroom sync, AI assistant, CTF tracker and more — all in one Obsidian note.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/1.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -17,14 +27,27 @@
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; min-height: 100vh; }
   .bg-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: drift 18s ease-in-out infinite alternate; }
+  .hero-grid {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    animation: gridDrift 20s ease-in-out infinite alternate;
+  }
+  @keyframes gridDrift {
+    from { background-position: 0 0; }
+    to { background-position: 32px 32px; }
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.28; animation: drift 18s ease-in-out infinite alternate; }
   .orb1 { width: 700px; height: 700px; background: var(--accent2); top: -200px; left: -200px; }
   .orb2 { width: 500px; height: 500px; background: var(--accent); bottom: -100px; right: -100px; animation-delay: -6s; }
   .orb3 { width: 400px; height: 400px; background: var(--accent3); top: 40%; left: 40%; animation-delay: -12s; }
   @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(60px,40px) scale(1.12); } }
   .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
   #preview .container { max-width: 1400px; }
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 0; background: rgba(6,8,16,0.75); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 0; background: rgba(6,8,16,0.75); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); transition: box-shadow 0.3s ease; }
+  nav.scrolled { box-shadow: 0 0 0 1px rgba(0,255,136,0.1), 0 4px 32px rgba(0,255,136,0.07); border-bottom-color: rgba(0,255,136,0.15); }
   nav .inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
   .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--text); display: flex; align-items: center; gap: 10px; }
   .nav-logo span { color: var(--accent); }
@@ -43,7 +66,7 @@
   h1 .accent2 { color: var(--accent3); }
   .hero-sub { font-size: 1.08rem; color: var(--muted); line-height: 1.7; margin-bottom: 36px; max-width: 480px; animation: fadeUp 0.6s 0.2s ease both; }
   .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
-  .btn-primary { background: var(--accent); color: #060810; padding: 14px 28px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; text-decoration: none; font-family: 'Syne', sans-serif; letter-spacing: 0.03em; display: flex; align-items: center; gap: 8px; transition: all 0.25s; box-shadow: 0 0 40px rgba(0,255,136,0.25); }
+  .btn-primary { background: var(--accent); color: #060810; padding: 16px 36px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; text-decoration: none; font-family: 'Syne', sans-serif; letter-spacing: 0.03em; display: flex; align-items: center; gap: 8px; transition: all 0.25s; box-shadow: 0 0 40px rgba(0,255,136,0.25); }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(0,255,136,0.35); }
   .btn-secondary { background: var(--glass); border: 1px solid var(--glass-border); color: var(--text); padding: 14px 28px; border-radius: 10px; font-weight: 500; font-size: 0.95rem; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: all 0.25s; }
   .btn-secondary:hover { background: var(--glass-hover); transform: translateY(-2px); }
@@ -58,7 +81,7 @@
 
   /* PREVIEW SECTION */
   .preview-wrap {
-    border-radius: 20px; overflow: hidden;
+    border-radius: 20px; overflow: visible;
     border: 1px solid var(--glass-border);
     box-shadow: 0 40px 80px rgba(0,0,0,0.6);
     position: relative;
@@ -80,7 +103,8 @@
   .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .feature-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px; transition: all 0.3s; position: relative; overflow: hidden; }
   .feature-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,255,136,0.04) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; }
-  .feature-card:hover { transform: translateY(-4px); border-color: rgba(0,255,136,0.2); box-shadow: var(--card-shadow); }
+  .feature-card { cursor: pointer; }
+  .feature-card:hover { transform: translateY(-4px) scale(1.02); border-color: rgba(0,255,136,0.2); box-shadow: var(--card-shadow); }
   .feature-card:hover::before { opacity: 1; }
   .feature-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 18px; }
   .feature-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
@@ -117,6 +141,10 @@
   .footer-links a:hover { color: var(--text); }
   .footer-copy { color: var(--muted); font-size: 0.82rem; }
 
+  .sticky-dl { position: fixed; bottom: 32px; right: 32px; z-index: 999; background: var(--accent); color: #060810; padding: 13px 24px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.88rem; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 32px rgba(0,255,136,0.4); transform: translateY(100px); opacity: 0; transition: all 0.4s cubic-bezier(0.22,1,0.36,1); pointer-events: none; }
+  .sticky-dl.show { transform: translateY(0); opacity: 1; pointer-events: all; }
+  .sticky-dl:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,255,136,0.5); }
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
   .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -137,6 +165,8 @@
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
 </div>
+
+<div class="hero-grid"></div>
 
 <nav>
   <div class="inner">
@@ -174,7 +204,8 @@
 </section>
 
 <!-- LIVE PREVIEW -->
-<section class="section" id="preview">
+<section class="section" id="preview" style="position:relative;">
+  <div style="position:absolute;top:-120px;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:1;"></div>
   <div class="container" style="max-width:1400px;">
     <div class="reveal">
       <div class="section-label">// live preview</div>
@@ -182,15 +213,22 @@
       <p class="section-sub">This is the real dashboard — fully interactive. Check off assignments, start the Pomodoro, type in the AI bar, register for CTFs.</p>
     </div>
     <div class="preview-wrap reveal">
-  <div class="preview-bar">
-    <div class="preview-dot" style="background:#ff5f57"></div>
-    <div class="preview-dot" style="background:#febc2e"></div>
-    <div class="preview-dot" style="background:#28c840"></div>
-    <div class="preview-title">ZEN-OS - Dashboard.md - Reading View</div>
-    <div class="preview-badge">Live interactive preview</div>
-  </div>
-  <div id="zen-preview" style="height:780px;overflow:hidden;background:#0d0d12;position:relative;width:100%;"></div>
-</div>
+        <div class="preview-bar">
+          <div class="preview-dot" style="background:#ff5f57"></div>
+          <div class="preview-dot" style="background:#febc2e"></div>
+          <div class="preview-dot" style="background:#28c840"></div>
+          <div class="preview-title">ZEN-OS - Dashboard.md - Reading View</div>
+          <div class="preview-badge">Live interactive preview</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:8px 16px;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--glass-border);flex-wrap:wrap;">
+          <div style="padding:4px 12px;border-radius:20px;font-size:0.68rem;font-family:'JetBrains Mono',monospace;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--accent);">✓ check off assignments</div>
+          <div style="padding:4px 12px;border-radius:20px;font-size:0.68rem;font-family:'JetBrains Mono',monospace;background:rgba(255,200,0,0.08);border:1px solid rgba(255,200,0,0.2);color:#ffc800;">▶ start pomodoro</div>
+          <div style="padding:4px 12px;border-radius:20px;font-size:0.68rem;font-family:'JetBrains Mono',monospace;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);color:#a78bfa;">⚑ register for CTFs</div>
+          <div style="padding:4px 12px;border-radius:20px;font-size:0.68rem;font-family:'JetBrains Mono',monospace;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);color:#06b6d4;">✦ ask the AI anything</div>
+          <div style="margin-left:auto;font-size:0.65rem;opacity:0.3;font-family:'JetBrains Mono',monospace;align-self:center;">fully interactive ↓</div>
+        </div>
+        <div id="zen-preview" style="height:780px;overflow:hidden;background:#0d0d12;position:relative;width:100%;"></div>
+    </div>
   </div>
 </section>
 
@@ -202,16 +240,47 @@
       <h2 class="section-title">Everything you need</h2>
       <p class="section-sub">Built entirely in a single <code style="font-family:'JetBrains Mono',monospace;font-size:0.9em;color:var(--accent)">dataviewjs</code> codeblock. No external apps, no subscriptions.</p>
     </div>
-    <div class="features-grid reveal">
-      <div class="feature-card"><div class="feature-icon">📚</div><div class="feature-name">Assignment Pipeline</div><div class="feature-desc">Syncs all Google Classroom assignments with due dates, countdowns, and urgency coloring.</div></div>
-      <div class="feature-card"><div class="feature-icon">🤖</div><div class="feature-name">AI Assistant</div><div class="feature-desc">Powered by Groq, Gemini, OpenAI, OpenRouter, or Grok — with full vault search and follow-up chat.</div></div>
-      <div class="feature-card"><div class="feature-icon">🚩</div><div class="feature-name">CTF Tracker</div><div class="feature-desc">Live feed from CTFtime.org with registration tracking and event details built in.</div></div>
-      <div class="feature-card"><div class="feature-icon">🔗</div><div class="feature-name">Quick Links</div><div class="feature-desc">Bookmark manager with drag-to-reorder, categories, and AI auto-fill for new links.</div></div>
-      <div class="feature-card"><div class="feature-icon">🧙</div><div class="feature-name">Setup Wizard</div><div class="feature-desc">A full-screen 9-step wizard guides you through everything on first launch. No manual config.</div></div>
-      <div class="feature-card"><div class="feature-icon">📄</div><div class="feature-name">Material Viewer</div><div class="feature-desc">Preview PDFs, Google Docs, Slides, and YouTube videos inline without leaving Obsidian.</div></div>
-      <div class="feature-card"><div class="feature-icon">↔️</div><div class="feature-name">Drag & Resize</div><div class="feature-desc">Drag cards to reorder both columns. Resize right-column cards by dragging the edge.</div></div>
-      <div class="feature-card"><div class="feature-icon">⏱</div><div class="feature-name">Pomodoro Timer</div><div class="feature-desc">Built into the System card. Focus sessions with automatic break reminders.</div></div>
-      <div class="feature-card"><div class="feature-icon">🔍</div><div class="feature-name">Vault Search</div><div class="feature-desc">Full-text search across all your notes, directly from the dashboard without switching views.</div></div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:48px;">
+
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">📅</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;">Google Sync</div>
+          <div style="font-size:0.72rem;color:var(--accent);font-family:'JetBrains Mono',monospace;opacity:0.6;margin-left:4px;">// powered by Google Workspace plugin</div>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card"><div class="feature-icon">📚</div><div class="feature-name">Assignment Pipeline</div><div class="feature-desc">Syncs all Google Classroom assignments with due dates, countdowns, and urgency coloring.</div></div>
+          <div class="feature-card"><div class="feature-icon">📄</div><div class="feature-name">Material Viewer</div><div class="feature-desc">Preview PDFs, Google Docs, Slides, and YouTube videos inline without leaving Obsidian.</div></div>
+          <div class="feature-card"><div class="feature-icon">🔌</div><div class="feature-name">Bundled Plugin</div><div class="feature-desc">No extra installs. The Google Workspace plugin is included in the zip — just enable and connect.</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🤖</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;">AI Tools</div>
+          <div style="font-size:0.72rem;color:#a78bfa;font-family:'JetBrains Mono',monospace;opacity:0.6;margin-left:4px;">// Groq · Gemini · OpenAI · Grok · OpenRouter</div>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card"><div class="feature-icon">🤖</div><div class="feature-name">AI Assistant</div><div class="feature-desc">Ask anything — deadlines, concepts, priorities. Full vault search with follow-up chat.</div></div>
+          <div class="feature-card"><div class="feature-icon">✦</div><div class="feature-name">Auto-fill Links</div><div class="feature-desc">AI auto-fills title, category and emoji when you add a new quick link. One click.</div></div>
+          <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-name">Assignment Summaries</div><div class="feature-desc">Click any assignment to get an AI summary of the description and attached materials.</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">⚡</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;">Productivity</div>
+          <div style="font-size:0.72rem;color:var(--accent3);font-family:'JetBrains Mono',monospace;opacity:0.6;margin-left:4px;">// built for focus</div>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card"><div class="feature-icon">🚩</div><div class="feature-name">CTF Tracker</div><div class="feature-desc">Live feed from CTFtime.org with registration tracking and event details.</div></div>
+          <div class="feature-card"><div class="feature-icon">⏱</div><div class="feature-name">Pomodoro Timer</div><div class="feature-desc">Built into the System card. Focus sessions with 25/5/15 minute presets.</div></div>
+          <div class="feature-card"><div class="feature-icon">🔗</div><div class="feature-name">Quick Links</div><div class="feature-desc">Bookmark manager with drag-to-reorder, categories, and AI auto-fill.</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -226,11 +295,70 @@
     </div>
     <div class="install-wrap reveal">
       <div class="steps">
-        <div class="step"><div class="step-num">1</div><div class="step-line"></div><div class="step-content"><div class="step-title">Install Dataview plugin</div><div class="step-desc">In Obsidian → Settings → Community Plugins → Browse, search <code>Dataview</code>, install and enable it. Then turn on <code>Enable JavaScript Queries</code> in Dataview settings.</div></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-line"></div><div class="step-content"><div class="step-title">Download & copy files</div><div class="step-desc">Download <code>zen-os-v3.0.zip</code>, unzip it, and copy everything inside the <code>zen-os/</code> folder directly into your vault root.</div></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-line"></div><div class="step-content"><div class="step-title">Enable Google Workspace plugin</div><div class="step-desc">Settings → Community Plugins → find <code>Google Workspace</code> → toggle on. It's already in the zip — no separate install needed.</div></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-line"></div><div class="step-content"><div class="step-title">Enable the CSS snippet</div><div class="step-desc">Settings → Appearance → CSS Snippets → enable <code>Dashboard-Zen</code>.</div></div></div>
-        <div class="step"><div class="step-num">5</div><div class="step-line"></div><div class="step-content"><div class="step-title">Open Dashboard.md in Reading View</div><div class="step-desc">The setup wizard launches automatically. Follow the 9 steps — connect Google, pick a theme, add an AI key — and you're done.</div></div></div>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-title">Install Dataview plugin</div>
+            <div class="step-desc">Open Obsidian → Settings → Community Plugins → Browse, search <code>Dataview</code>, install and enable it.</div>
+            <div style="margin-top:10px;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:10px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent);">
+              Settings → Community Plugins → Browse<br>
+              <span style="opacity:0.5">→ search "Dataview" → Install → Enable</span><br>
+              <span style="opacity:0.5">→ Dataview Settings → Enable JavaScript Queries ✓</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-title">Download & copy files</div>
+            <div class="step-desc">Download the zip, unzip it, copy everything inside <code>zen-os/</code> into your vault root.</div>
+            <div style="margin-top:10px;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:10px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#e8eaf0;">
+              <span style="color:var(--muted)">your-vault/</span><br>
+              ├── <span style="color:var(--accent)">Dashboard.md</span><br>
+              └── .obsidian/<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;├── plugins/<span style="color:var(--accent)">google-workspace-obsidian/</span><br>
+              &nbsp;&nbsp;&nbsp;&nbsp;└── snippets/<span style="color:var(--accent)">Dashboard-Zen.css</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-title">Enable Google Workspace plugin</div>
+            <div class="step-desc">The plugin is already in the zip — no separate download needed.</div>
+            <div style="margin-top:10px;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:10px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent);">
+              Settings → Community Plugins<br>
+              <span style="opacity:0.5">→ find "Google Workspace" → toggle ON ✓</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-title">Enable the CSS snippet</div>
+            <div class="step-desc">This applies the dashboard styling.</div>
+            <div style="margin-top:10px;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:10px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent);">
+              Settings → Appearance → CSS Snippets<br>
+              <span style="opacity:0.5">→ enable "Dashboard-Zen" ✓</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-title">Open Dashboard.md in Reading View</div>
+            <div class="step-desc">The 9-step setup wizard launches automatically. Connect Google, pick a theme, add an AI key — done.</div>
+            <div style="margin-top:10px;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:10px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;">
+              <span style="color:var(--accent)">Dashboard.md</span> <span style="color:var(--muted)">→ Reading View</span><br>
+              <span style="opacity:0.5">→ wizard launches → follow 9 steps → 🚀</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="install-card">
         <div class="install-card-title">✦ ZEN-OS v3.0</div>
@@ -249,18 +377,38 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-logo">✦ ZEN<span>-OS</span></div>
+      <div>
+        <div class="footer-logo">✦ ZEN<span>-OS</span></div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:6px;">Made with ♥ by <a href="https://github.com/5h3rd1l" target="_blank" style="color:var(--accent);text-decoration:none;">5h3rd1l</a></div>
+      </div>
       <div class="footer-links">
         <a href="https://github.com/5h3rd1l/zen-os" target="_blank">GitHub</a>
         <a href="https://github.com/5h3rd1l/zen-os/releases" target="_blank">Releases</a>
         <a href="https://github.com/5h3rd1l/zen-os/blob/main/README.md" target="_blank">Docs</a>
       </div>
-      <div class="footer-copy">MIT License — free to use & modify</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+        <a href="https://github.com/5h3rd1l/zen-os" target="_blank">
+          <img src="https://img.shields.io/github/stars/5h3rd1l/zen-os?style=flat-square&color=00ff88&labelColor=0a0a0a&label=★%20stars" alt="GitHub stars">
+        </a>
+        <div style="font-size:0.75rem;color:var(--muted);">MIT License — free to use & modify</div>
+      </div>
     </div>
   </div>
 </footer>
 
 <script>
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+const hero = document.querySelector('.hero');
+const stickyDl = document.getElementById('sticky-dl');
+const heroObserver = new IntersectionObserver(entries => {
+  stickyDl.classList.toggle('show', !entries[0].isIntersecting);
+}, { threshold: 0 });
+heroObserver.observe(hero);
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
@@ -268,6 +416,26 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 reveals.forEach(el => observer.observe(el));
+
+const steps = document.querySelectorAll('.step');
+const stepObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = Array.from(steps).indexOf(e.target);
+      setTimeout(() => {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }, idx * 120);
+      stepObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+steps.forEach(s => {
+  s.style.opacity = '0';
+  s.style.transform = 'translateY(24px)';
+  s.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  stepObserver.observe(s);
+});
 
 // Inject dashboard directly into div
 (function(){
@@ -583,5 +751,6 @@ reveals.forEach(el => observer.observe(el));
 
 })();
 </script>
+<a href="https://github.com/5h3rd1l/zen-os/releases/latest/download/zen-os-v3.0.zip" class="sticky-dl" id="sticky-dl">⬇ Download Free</a>
 </body>
 </html>
