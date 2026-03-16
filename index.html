@@ -56,7 +56,18 @@
   .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 520px; margin-bottom: 48px; }
 
   /* PREVIEW SECTION */
-  .preview-wrap { border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 40px 80px rgba(0,0,0,0.6); position: relative; }
+  .preview-wrap {
+    border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease;
+    cursor: default;
+  }
+  .preview-wrap:hover {
+    transform: scale(1.012) translateY(-4px);
+    box-shadow: 0 60px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,255,136,0.15);
+  }
   .preview-bar { background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--glass-border); padding: 10px 16px; display: flex; align-items: center; gap: 8px; }
   .preview-dot { width: 10px; height: 10px; border-radius: 50%; }
   .preview-title { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-left: 8px; }
@@ -177,7 +188,12 @@
         <div class="preview-title">ZEN-OS — Dashboard.md — Reading View</div>
         <div class="preview-badge">Live interactive preview</div>
       </div>
-      <iframe id="preview-frame" src="about:blank" height="660" scrolling="no"></iframe>
+      <div id="preview-overlay" style="position:absolute;inset:40px 0 0 0;z-index:10;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity 0.3s">
+        <div style="background:rgba(6,8,16,0.7);border:1px solid rgba(0,255,136,0.2);border-radius:12px;padding:10px 20px;font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;backdrop-filter:blur(10px)">
+          ↕ scroll · click to interact
+        </div>
+      </div>
+      <iframe id="preview-frame" src="about:blank" height="680" scrolling="yes" style="pointer-events:all;"></iframe>
     </div>
   </div>
 </section>
@@ -536,6 +552,12 @@ document.getElementById('ai-inp').addEventListener('keydown',function(e){if(e.ke
 const frame = document.getElementById('preview-frame');
 const doc = frame.contentDocument || frame.contentWindow.document;
 doc.open(); doc.write(previewHTML); doc.close();
+frame.contentWindow.dispatchEvent(new Event('load'));
+
+const wrap = document.querySelector('.preview-wrap');
+const overlay = document.getElementById('preview-overlay');
+wrap.addEventListener('mouseenter', () => overlay.style.opacity = '0');
+wrap.addEventListener('mouseleave', () => overlay.style.opacity = '1');
 </script>
 </body>
 </html>
