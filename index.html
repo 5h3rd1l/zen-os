@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZEN-OS — Obsidian Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --accent: #00ff88; --accent2: #7c3aed; --accent3: #06b6d4;
+    --bg: #060810; --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08); --glass-hover: rgba(255,255,255,0.07);
+    --text: #e8eaf0; --muted: rgba(232,234,240,0.45); --card-shadow: 0 8px 48px rgba(0,0,0,0.5);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; min-height: 100vh; }
+  .bg-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: drift 18s ease-in-out infinite alternate; }
+  .orb1 { width: 700px; height: 700px; background: var(--accent2); top: -200px; left: -200px; }
+  .orb2 { width: 500px; height: 500px; background: var(--accent); bottom: -100px; right: -100px; animation-delay: -6s; }
+  .orb3 { width: 400px; height: 400px; background: var(--accent3); top: 40%; left: 40%; animation-delay: -12s; }
+  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(60px,40px) scale(1.12); } }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 0; background: rgba(6,8,16,0.75); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+  nav .inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--text); display: flex; align-items: center; gap: 10px; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: var(--accent); color: #060810; padding: 9px 22px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; text-decoration: none; font-family: 'Syne', sans-serif; letter-spacing: 0.04em; transition: opacity 0.2s, transform 0.2s; }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px; }
+  .hero-inner { display: flex; flex-direction: column; max-width: 640px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 100px; padding: 6px 14px 6px 10px; font-size: 0.78rem; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-bottom: 28px; width: fit-content; animation: fadeUp 0.6s ease both; }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: block; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  h1 { font-family: 'Syne', sans-serif; font-weight: 900; font-size: clamp(3rem, 6vw, 5rem); line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 22px; animation: fadeUp 0.6s 0.1s ease both; }
+  h1 .accent { color: var(--accent); }
+  h1 .accent2 { color: var(--accent3); }
+  .hero-sub { font-size: 1.08rem; color: var(--muted); line-height: 1.7; margin-bottom: 36px; max-width: 480px; animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+  .btn-primary { background: var(--accent); color: #060810; padding: 14px 28px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; text-decoration: none; font-family: 'Syne', sans-serif; letter-spacing: 0.03em; display: flex; align-items: center; gap: 8px; transition: all 0.25s; box-shadow: 0 0 40px rgba(0,255,136,0.25); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(0,255,136,0.35); }
+  .btn-secondary { background: var(--glass); border: 1px solid var(--glass-border); color: var(--text); padding: 14px 28px; border-radius: 10px; font-weight: 500; font-size: 0.95rem; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: all 0.25s; }
+  .btn-secondary:hover { background: var(--glass-hover); transform: translateY(-2px); }
+  .hero-stats { display: flex; gap: 28px; margin-top: 40px; animation: fadeUp 0.6s 0.4s ease both; }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--accent); }
+  .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em; }
+  .section { padding: 100px 0; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
+  .section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 3.5vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 520px; margin-bottom: 48px; }
+
+  /* PREVIEW SECTION */
+  .preview-wrap { border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 40px 80px rgba(0,0,0,0.6); position: relative; }
+  .preview-bar { background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--glass-border); padding: 10px 16px; display: flex; align-items: center; gap: 8px; }
+  .preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .preview-title { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-left: 8px; }
+  .preview-badge { margin-left: auto; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); color: var(--accent); padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 6px; }
+  .preview-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); display: block; animation: pulse 2s infinite; }
+  iframe#preview-frame { width: 100%; border: none; display: block; background: #0d0d12; }
+
+  /* FEATURES */
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feature-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px; transition: all 0.3s; position: relative; overflow: hidden; }
+  .feature-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,255,136,0.04) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; }
+  .feature-card:hover { transform: translateY(-4px); border-color: rgba(0,255,136,0.2); box-shadow: var(--card-shadow); }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 18px; }
+  .feature-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+  .feature-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* INSTALL */
+  .install-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .steps { display: flex; flex-direction: column; }
+  .step { display: flex; gap: 20px; position: relative; padding-bottom: 32px; }
+  .step:last-child { padding-bottom: 0; }
+  .step-line { position: absolute; left: 19px; top: 40px; bottom: 0; width: 1px; background: var(--glass-border); }
+  .step:last-child .step-line { display: none; }
+  .step-num { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--glass); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; color: var(--accent); position: relative; z-index: 1; }
+  .step-content { padding-top: 8px; }
+  .step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+  .step-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+  .step-desc code { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.82em; }
+  .install-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 36px; position: sticky; top: 100px; }
+  .install-card-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; margin-bottom: 8px; }
+  .install-card-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 28px; line-height: 1.6; }
+  .install-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--accent); color: #060810; padding: 16px; border-radius: 12px; text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 0.02em; margin-bottom: 16px; transition: all 0.25s; box-shadow: 0 0 40px rgba(0,255,136,0.2); }
+  .install-btn:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(0,255,136,0.3); }
+  .install-github { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text); padding: 13px; border-radius: 12px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.25s; }
+  .install-github:hover { background: var(--glass-hover); }
+  .install-note { margin-top: 20px; padding: 14px; border-radius: 10px; background: rgba(0,255,136,0.06); border: 1px solid rgba(0,255,136,0.15); font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .install-note strong { color: var(--accent); }
+
+  footer { border-top: 1px solid var(--glass-border); padding: 40px 0; position: relative; z-index: 1; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 0.08em; }
+  .footer-logo span { color: var(--accent); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { color: var(--muted); font-size: 0.82rem; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .install-wrap { grid-template-columns: 1fr; }
+    .install-card { position: static; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="bg-scene">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<nav>
+  <div class="inner">
+    <div class="nav-logo">✦ ZEN<span>-OS</span></div>
+    <ul class="nav-links">
+      <li><a href="#preview">Preview</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="https://github.com/5h3rd1l/zen-os" target="_blank">GitHub</a></li>
+    </ul>
+    <a href="https://github.com/5h3rd1l/zen-os/releases/latest/download/zen-os-v3.0.zip" class="nav-cta">⬇ Download</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-badge">v3.0 — Google Workspace Edition</div>
+      <h1>Your Obsidian<br><span class="accent">Command</span><br><span class="accent2">Center</span></h1>
+      <p class="hero-sub">A professional dashboard with Google Classroom sync, AI assistant, CTF tracker, and quick links — all in a single note.</p>
+      <div class="hero-actions">
+        <a href="https://github.com/5h3rd1l/zen-os/releases/latest/download/zen-os-v3.0.zip" class="btn-primary">⬇ Download v3.0</a>
+        <a href="https://github.com/5h3rd1l/zen-os" target="_blank" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          View on GitHub
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">1</span><span class="stat-label">File to copy</span></div>
+        <div class="stat"><span class="stat-num">9</span><span class="stat-label">Setup steps</span></div>
+        <div class="stat"><span class="stat-num">5+</span><span class="stat-label">AI providers</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE PREVIEW -->
+<section class="section" id="preview">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// live preview</div>
+      <h2 class="section-title">Try it right here</h2>
+      <p class="section-sub">This is the real dashboard — fully interactive. Check off assignments, start the Pomodoro, type in the AI bar, register for CTFs.</p>
+    </div>
+    <div class="preview-wrap reveal">
+      <div class="preview-bar">
+        <div class="preview-dot" style="background:#ff5f57"></div>
+        <div class="preview-dot" style="background:#febc2e"></div>
+        <div class="preview-dot" style="background:#28c840"></div>
+        <div class="preview-title">ZEN-OS — Dashboard.md — Reading View</div>
+        <div class="preview-badge">Live interactive preview</div>
+      </div>
+      <iframe id="preview-frame" src="about:blank" height="660" scrolling="no"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// features</div>
+      <h2 class="section-title">Everything you need</h2>
+      <p class="section-sub">Built entirely in a single <code style="font-family:'JetBrains Mono',monospace;font-size:0.9em;color:var(--accent)">dataviewjs</code> codeblock. No external apps, no subscriptions.</p>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature-card"><div class="feature-icon">📚</div><div class="feature-name">Assignment Pipeline</div><div class="feature-desc">Syncs all Google Classroom assignments with due dates, countdowns, and urgency coloring.</div></div>
+      <div class="feature-card"><div class="feature-icon">🤖</div><div class="feature-name">AI Assistant</div><div class="feature-desc">Powered by Groq, Gemini, OpenAI, OpenRouter, or Grok — with full vault search and follow-up chat.</div></div>
+      <div class="feature-card"><div class="feature-icon">🚩</div><div class="feature-name">CTF Tracker</div><div class="feature-desc">Live feed from CTFtime.org with registration tracking and event details built in.</div></div>
+      <div class="feature-card"><div class="feature-icon">🔗</div><div class="feature-name">Quick Links</div><div class="feature-desc">Bookmark manager with drag-to-reorder, categories, and AI auto-fill for new links.</div></div>
+      <div class="feature-card"><div class="feature-icon">🧙</div><div class="feature-name">Setup Wizard</div><div class="feature-desc">A full-screen 9-step wizard guides you through everything on first launch. No manual config.</div></div>
+      <div class="feature-card"><div class="feature-icon">📄</div><div class="feature-name">Material Viewer</div><div class="feature-desc">Preview PDFs, Google Docs, Slides, and YouTube videos inline without leaving Obsidian.</div></div>
+      <div class="feature-card"><div class="feature-icon">↔️</div><div class="feature-name">Drag & Resize</div><div class="feature-desc">Drag cards to reorder both columns. Resize right-column cards by dragging the edge.</div></div>
+      <div class="feature-card"><div class="feature-icon">⏱</div><div class="feature-name">Pomodoro Timer</div><div class="feature-desc">Built into the System card. Focus sessions with automatic break reminders.</div></div>
+      <div class="feature-card"><div class="feature-icon">🔍</div><div class="feature-name">Vault Search</div><div class="feature-desc">Full-text search across all your notes, directly from the dashboard without switching views.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="section" id="install">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// installation</div>
+      <h2 class="section-title">Up in 5 minutes</h2>
+      <p class="section-sub">Download the zip, copy files into your vault, and the wizard handles the rest.</p>
+    </div>
+    <div class="install-wrap reveal">
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-line"></div><div class="step-content"><div class="step-title">Install Dataview plugin</div><div class="step-desc">In Obsidian → Settings → Community Plugins → Browse, search <code>Dataview</code>, install and enable it. Then turn on <code>Enable JavaScript Queries</code> in Dataview settings.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-line"></div><div class="step-content"><div class="step-title">Download & copy files</div><div class="step-desc">Download <code>zen-os-v3.0.zip</code>, unzip it, and copy everything inside the <code>zen-os/</code> folder directly into your vault root.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-line"></div><div class="step-content"><div class="step-title">Enable Google Workspace plugin</div><div class="step-desc">Settings → Community Plugins → find <code>Google Workspace</code> → toggle on. It's already in the zip — no separate install needed.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-line"></div><div class="step-content"><div class="step-title">Enable the CSS snippet</div><div class="step-desc">Settings → Appearance → CSS Snippets → enable <code>Dashboard-Zen</code>.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-line"></div><div class="step-content"><div class="step-title">Open Dashboard.md in Reading View</div><div class="step-desc">The setup wizard launches automatically. Follow the 9 steps — connect Google, pick a theme, add an AI key — and you're done.</div></div></div>
+      </div>
+      <div class="install-card">
+        <div class="install-card-title">✦ ZEN-OS v3.0</div>
+        <div class="install-card-sub">Google Workspace Edition — includes the bundled plugin, dashboard, and stylesheet. Just copy into vault.</div>
+        <a href="https://github.com/5h3rd1l/zen-os/releases/latest/download/zen-os-v3.0.zip" class="install-btn">⬇ Download zen-os-v3.0.zip</a>
+        <a href="https://github.com/5h3rd1l/zen-os" target="_blank" class="install-github">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          View source on GitHub
+        </a>
+        <div class="install-note"><strong>⚠ Requires:</strong> Obsidian + Dataview plugin with JavaScript Queries enabled. Google account optional but recommended.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">✦ ZEN<span>-OS</span></div>
+      <div class="footer-links">
+        <a href="https://github.com/5h3rd1l/zen-os" target="_blank">GitHub</a>
+        <a href="https://github.com/5h3rd1l/zen-os/releases" target="_blank">Releases</a>
+        <a href="https://github.com/5h3rd1l/zen-os/blob/main/README.md" target="_blank">Docs</a>
+      </div>
+      <div class="footer-copy">MIT License — free to use & modify</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+const previewHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--acc:#6366f1;--acc-rgb:99,102,241;--bg:#0d0d12;--card:rgba(255,255,255,0.03);--cb:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:rgba(232,234,240,0.45);--red:#ff4d6d;--orange:#ff8c00;--yellow:#ffc800;--green:#00ff88;--mono:'JetBrains Mono',monospace;--head:'Syne',sans-serif;--body:'DM Sans',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.card{background:var(--card);border:1px solid var(--cb);border-radius:16px;overflow:hidden}.card:hover{border-color:rgba(255,255,255,0.11)}
+.mono{font-family:var(--mono)}.lbl{font-size:9px;font-weight:700;letter-spacing:2px;opacity:0.35;text-transform:uppercase}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+.header{padding:24px 28px 18px;background:var(--bg);border-bottom:1px solid var(--cb);flex-shrink:0;position:relative}
+.hero-title{font-family:var(--head);font-size:clamp(40px,5.5vw,68px);font-weight:900;line-height:0.95;letter-spacing:-3px;background:linear-gradient(to right,#fff 0%,rgba(255,255,255,0.38) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.stats-row{display:flex;gap:8px;position:absolute;top:24px;right:28px}
+.stat-cube{background:rgba(255,255,255,0.03);border:1px solid var(--cb);border-radius:12px;padding:9px 13px;min-width:100px}
+.stat-val{font-family:var(--head);font-size:20px;font-weight:900;color:var(--acc);line-height:1}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.ai-bar{display:flex;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden;max-width:640px;transition:border-color 0.2s}
+.ai-bar:focus-within{border-color:rgba(var(--acc-rgb),0.4)}
+.ai-input{flex:1;background:transparent;border:none;padding:10px 12px;color:#fff;font-size:12px;outline:none;font-family:var(--body)}
+.ai-ask{padding:7px 14px;background:transparent;color:rgba(255,255,255,0.3);border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:10px;font-weight:700;letter-spacing:1px;transition:all 0.2s;font-family:var(--body)}
+.ai-ask:hover{color:var(--acc);background:rgba(var(--acc-rgb),0.08)}
+.quick-chips{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.chip{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.07);cursor:pointer;transition:all 0.2s}
+.chip:hover{background:rgba(var(--acc-rgb),0.1);color:var(--acc);border-color:rgba(var(--acc-rgb),0.3)}
+.quote{font-size:12px;opacity:0.45;font-style:italic;margin-top:8px}
+.main{display:flex;flex:1;overflow:hidden}
+.left-col{width:300px;flex-shrink:0;border-right:1px solid var(--cb);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
+.right-col{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
+.ch{padding:9px 13px;border-bottom:1px solid var(--cb);display:flex;align-items:center;justify-content:space-between}
+.ct{font-size:10px;font-weight:800;letter-spacing:2px;opacity:0.65;display:flex;align-items:center;gap:7px}
+.cb2{padding:11px 13px}
+.clock-val{font-family:var(--mono);font-size:30px;font-weight:700;letter-spacing:-2px;color:var(--acc);line-height:1;margin-bottom:3px}
+.clock-date{font-size:9px;font-weight:700;letter-spacing:1.5px;opacity:0.4;margin-bottom:12px}
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.prog-bar{height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-bottom:12px}
+.prog-fill{height:100%;border-radius:2px;transition:width 1s linear}
+.objective-val{font-family:var(--head);font-size:20px;font-weight:800;line-height:1.2;outline:none;cursor:text;min-height:28px}
+.objective-val:empty:before{content:attr(data-placeholder);opacity:0.3}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.action-btn{background:rgba(255,255,255,0.03);border:1px solid var(--cb);border-radius:10px;padding:11px;cursor:pointer;transition:all 0.2s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.action-btn:hover{background:rgba(var(--acc-rgb),0.08);border-color:rgba(var(--acc-rgb),0.3)}
+.action-btn .ai{font-size:15px}.action-btn .al{font-size:9px;font-weight:700;letter-spacing:1.5px;opacity:0.45}
+.pom-bar{margin-top:9px;background:rgba(255,255,255,0.03);border:1px solid var(--cb);border-radius:10px;padding:9px 11px;display:flex;align-items:center;justify-content:space-between}
+.pom-time{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--acc)}
+.pom-btns{display:flex;gap:5px}
+.pb{background:rgba(var(--acc-rgb),0.1);border:1px solid rgba(var(--acc-rgb),0.2);color:var(--acc);border-radius:7px;padding:4px 10px;cursor:pointer;font-size:11px;font-family:var(--mono)}
+.pb.stop{background:rgba(255,77,109,0.1);border-color:rgba(255,77,109,0.2);color:var(--red)}
+.sum-bar{display:flex;gap:5px;padding:9px 13px 7px;flex-wrap:wrap}
+.sp{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;cursor:pointer;transition:all 0.2s;border:2px solid transparent}
+.ev-item{display:flex;align-items:stretch;border-radius:11px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.025);margin-bottom:7px;overflow:hidden;cursor:pointer;transition:transform 0.15s}
+.ev-item:hover{transform:translateX(2px)}
+.ev-stripe{width:3px;flex-shrink:0}
+.ev-chk{display:flex;align-items:center;padding:0 10px}
+.ev-chk-box{width:16px;height:16px;border-radius:4px;border:2px solid rgba(255,255,255,0.18);background:transparent;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;font-size:9px}
+.ev-chk-box.done{background:var(--green);border-color:var(--green);color:#000}
+.ev-body{flex:1;padding:9px 11px 9px 0;min-width:0}
+.ev-title{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.ev-meta{display:flex;align-items:center;gap:5px}
+.ev-course{font-size:10px;opacity:0.4;font-weight:600}
+.ev-due{font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px}
+.grp-hdr{display:flex;align-items:center;gap:7px;margin:12px 0 7px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.grp-stripe{width:3px;height:12px;border-radius:2px;flex-shrink:0}.grp-lbl{font-size:9px;font-weight:800;letter-spacing:2px}
+.grp-cnt{font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-left:auto}
+.ctf-item{padding:11px 13px;background:rgba(255,255,255,0.025);border-radius:11px;border:1px solid rgba(255,255,255,0.06);margin-bottom:7px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.ctf-item:hover{background:rgba(255,255,255,0.04)}
+.ctf-top-stripe{position:absolute;top:0;left:0;right:0;height:2px}
+.ctf-name{font-size:12px;font-weight:700;line-height:1.3;flex:1}
+.ctf-cd{font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;white-space:nowrap;font-family:var(--mono)}
+.ctf-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px}
+.ctf-reg{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.35)}
+.ctf-reg:hover{border-color:rgba(var(--acc-rgb),0.3);color:var(--acc)}.ctf-reg.reg{background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.25);color:var(--green)}
+.links-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.link-item{background:rgba(255,255,255,0.025);border:1px solid var(--cb);border-radius:10px;padding:8px 10px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:7px}
+.link-item:hover{background:rgba(255,255,255,0.045);border-color:rgba(var(--acc-rgb),0.25);transform:translateY(-1px)}
+.link-icon{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.link-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.link-cat{font-size:9px;opacity:0.35;margin-top:1px}
+.ai-out{background:rgba(255,255,255,0.03);border:1px solid var(--cb);border-radius:10px;padding:9px 11px;font-size:11px;line-height:1.7;margin-top:7px;max-height:100px;overflow-y:auto;display:none}
+.ai-typing{display:flex;gap:4px;align-items:center;padding:3px 0}
+.ai-typing span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.4);animation:bounce 1.2s ease-in-out infinite}
+.ai-typing span:nth-child(2){animation-delay:0.2s}.ai-typing span:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.pill-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700}
+</style></head><body>
+<div style="height:100vh;display:flex;flex-direction:column;background:#0d0d12;overflow:hidden">
+<div class="header">
+  <div class="stats-row">
+    <div class="stat-cube"><div class="lbl" style="margin-bottom:3px">Notes</div><div class="stat-val">247</div></div>
+    <div class="stat-cube"><div class="lbl" style="margin-bottom:3px">Pending</div><div class="stat-val" style="color:#ffc800" id="s-pend">5</div></div>
+  </div>
+  <div class="hero-title">DASHBOARD<br>ZEN</div>
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><div class="ai-dot"></div><span class="lbl">AI ASSISTANT</span></div>
+  <div class="ai-bar">
+    <div style="padding:0 11px;font-size:13px;opacity:0.25">✦</div>
+    <input class="ai-input" id="ai-inp" placeholder="Ask anything — assignments, concepts, deadlines...">
+    <div style="width:1px;height:16px;background:rgba(255,255,255,0.07)"></div>
+    <button class="ai-ask" onclick="sendAI()">ASK ↵</button>
+  </div>
+  <div class="quick-chips">
+    <div class="chip" onclick="quickAsk(this,&quot;What assignments are due today?&quot;)">📋 What's due today?</div>
+    <div class="chip" onclick="quickAsk(this,&quot;Summarize my week&quot;)">⚡ Summarize my week</div>
+    <div class="chip" onclick="quickAsk(this,&quot;What should I focus on first?&quot;)">🎯 Top priority?</div>
+  </div>
+  <div class="quote">"Knowledge compounds faster than motivation fades. – Unknown"</div>
+  <div id="ai-out" class="ai-out"></div>
+</div>
+<div class="main">
+<div class="left-col">
+  <div class="card">
+    <div class="ch"><div class="ct">CLOCK</div></div>
+    <div class="cb2">
+      <div class="clock-val" id="clk">--:-- --</div>
+      <div class="clock-date" id="clk-date">LOADING...</div>
+      <div class="prog-row"><span class="lbl">DAY PROGRESS</span><span class="mono" style="font-size:9px;color:var(--acc)" id="dp">0%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="db" style="background:var(--acc);width:0%"></div></div>
+      <div class="prog-row"><span class="lbl">WEEK PROGRESS</span><span class="mono" style="font-size:9px;color:#ffc800" id="wp">0%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="wb" style="background:#ffc800;width:0%"></div></div>
+      <div class="prog-row"><span class="lbl">YEAR PROGRESS</span><span class="mono" style="font-size:9px;color:#ff8c00" id="yp">0%</span></div>
+      <div class="prog-bar" style="margin-bottom:0"><div class="prog-fill" id="yb" style="background:#ff8c00;width:0%"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">OBJECTIVE</div></div>
+    <div class="cb2"><div class="objective-val" contenteditable="true" data-placeholder="Define your success today...">Build the ZEN-OS landing page</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">SYSTEM</div></div>
+    <div class="cb2">
+      <div class="action-grid">
+        <div class="action-btn" onclick="showMsg('Vault search — type in the AI bar above')"><div class="ai">⌕</div><div class="al">SEARCH</div></div>
+        <div class="action-btn" onclick="showMsg('247 notes · 18 folders · Top: CS401 (34)')"><div class="ai">◫</div><div class="al">STATS</div></div>
+        <div class="action-btn" onclick="togglePom()"><div class="ai">◷</div><div class="al">POMODORO</div></div>
+        <div class="action-btn"><div class="ai">+</div><div class="al">NEW NOTE</div></div>
+      </div>
+      <div class="pom-bar" id="pom-bar" style="display:none">
+        <div><div class="lbl" style="margin-bottom:2px">FOCUS SESSION</div><div class="pom-time" id="pom-d">25:00</div></div>
+        <div class="pom-btns"><div class="pb" id="pom-btn" onclick="startPom()">▶</div><div class="pb stop" onclick="resetPom()">■</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="right-col">
+  <div class="card">
+    <div class="ch" style="flex-wrap:wrap;gap:7px">
+      <div class="ct">ASSIGNMENT PIPELINE <span class="pill-badge" style="background:rgba(var(--acc-rgb),0.1);color:var(--acc)">ALL COURSES</span></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid var(--cb);border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;opacity:0.5">SORT BY DATE</div>
+        <div style="background:rgba(var(--acc-rgb),0.1);border:1px solid rgba(var(--acc-rgb),0.2);border-radius:6px;padding:2px 7px;font-size:9px;font-weight:700;color:var(--acc)">VIEW AS LIST</div>
+        <div style="opacity:0.4;font-size:13px;cursor:pointer">⚙</div>
+      </div>
+    </div>
+    <div class="sum-bar" id="sum-bar"></div>
+    <div id="pipeline" style="padding:0 13px 13px;max-height:260px;overflow-y:auto"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+    <div class="card">
+      <div class="ch"><div class="ct">CTF TRACKER</div><span style="font-size:9px;opacity:0.3;font-family:var(--mono)">CTFtime</span></div>
+      <div style="display:flex;gap:5px;padding:9px 13px 5px;flex-wrap:wrap" id="ctf-sum"></div>
+      <div id="ctf-body" style="padding:0 13px 13px;max-height:300px;overflow-y:auto"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">QUICK LINKS</div><button onclick="addLink()" style="background:rgba(var(--acc-rgb),0.1);border:1px solid rgba(var(--acc-rgb),0.25);color:var(--acc);border-radius:6px;padding:2px 8px;font-size:9px;font-weight:700;cursor:pointer">+ ADD</button></div>
+      <div style="padding:9px 13px 13px"><div class="links-grid" id="links-grid"></div></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script>
+var pomRun=false,pomSecs=25*60,pomInt=null,afilt=null;
+function pad(n){return String(n).padStart(2,'0')}
+function updateClock(){
+  var d=new Date();
+  document.getElementById('clk').textContent=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+  document.getElementById('clk-date').textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
+  var ss=d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
+  var dp=(ss/86400*100).toFixed(1);document.getElementById('db').style.width=dp+'%';document.getElementById('dp').textContent=dp+'%';
+  var dow=(d.getDay()+6)%7,wp=((dow*86400+ss)/(7*86400)*100).toFixed(1);
+  document.getElementById('wb').style.width=wp+'%';document.getElementById('wp').textContent=wp+'%';
+  var soy=new Date(d.getFullYear(),0,1),eoy=new Date(d.getFullYear()+1,0,1),yp=((d-soy)/(eoy-soy)*100).toFixed(1);
+  document.getElementById('yb').style.width=yp+'%';document.getElementById('yp').textContent=yp+'%';
+}
+setInterval(updateClock,1000);updateClock();
+function togglePom(){var b=document.getElementById('pom-bar');b.style.display=b.style.display==='none'?'flex':'none';}
+function startPom(){
+  if(pomRun){clearInterval(pomInt);pomRun=false;document.getElementById('pom-btn').textContent='▶';}
+  else{pomRun=true;document.getElementById('pom-btn').textContent='⏸';
+    pomInt=setInterval(function(){if(pomSecs<=0){clearInterval(pomInt);pomRun=false;document.getElementById('pom-btn').textContent='▶';return;}
+    pomSecs--;var m=Math.floor(pomSecs/60),s=pomSecs%60;document.getElementById('pom-d').textContent=pad(m)+':'+pad(s);},1000);}
+}
+function resetPom(){clearInterval(pomInt);pomRun=false;pomSecs=25*60;document.getElementById('pom-d').textContent='25:00';document.getElementById('pom-btn').textContent='▶';}
+var assignments=[
+  {id:1,title:'Network Security Lab Report',course:'CS 401 — Cybersecurity',due:0,done:false},
+  {id:2,title:'Algorithm Analysis Assignment 3',course:'CS 302 — Data Structures',due:1,done:false},
+  {id:3,title:'Linear Algebra Problem Set 7',course:'MATH 201',due:2,done:false},
+  {id:4,title:'Web Application Final Project',course:'CS 350 — Web Dev',due:5,done:false},
+  {id:5,title:'OS Concepts Essay',course:'CS 310 — Operating Systems',due:7,done:false},
+];
+function renderSum(){
+  var bar=document.getElementById('sum-bar');bar.innerHTML='';
+  var pend=assignments.filter(function(a){return!a.done;});
+  var ov=pend.filter(function(a){return a.due<0;}).length,td=pend.filter(function(a){return a.due===0;}).length;
+  var wk=pend.filter(function(a){return a.due>0&&a.due<=7;}).length,dn=assignments.filter(function(a){return a.done;}).length;
+  [{l:ov+' Overdue',c:'#ff4d6d',bg:'rgba(255,77,109,0.1)',f:'overdue'},{l:td+' Today',c:'#ff8c00',bg:'rgba(255,140,0,0.1)',f:'today'},{l:wk+' This Week',c:'#ffc800',bg:'rgba(255,200,0,0.08)',f:'week'},{l:dn+' Done',c:'#00ff88',bg:'rgba(0,255,136,0.08)',f:'done'}].forEach(function(p){
+    var pill=document.createElement('div');pill.className='sp';pill.innerText=p.l;pill.style.color=p.c;pill.style.background=p.bg;
+    if(afilt===p.f)pill.style.borderColor=p.c;
+    pill.onclick=function(){afilt=afilt===p.f?null:p.f;renderSum();renderPipe();};
+    bar.appendChild(pill);
+  });
+  document.getElementById('s-pend').textContent=pend.length;
+}
+function renderPipe(){
+  var body=document.getElementById('pipeline');body.innerHTML='';
+  var evs=assignments.filter(function(a){
+    if(afilt==='done')return a.done;if(a.done)return false;
+    if(afilt==='overdue')return a.due<0;if(afilt==='today')return a.due===0;if(afilt==='week')return a.due>0&&a.due<=7;return true;
+  });
+  if(!evs.length){body.innerHTML='<div style="text-align:center;padding:28px;opacity:0.4;font-size:11px">All caught up!</div>';return;}
+  var groups={overdue:{l:'OVERDUE',c:'#ff4d6d',evs:[]},today:{l:'DUE TODAY',c:'#ff8c00',evs:[]},week:{l:'THIS WEEK',c:'#ffc800',evs:[]},later:{l:'COMING UP',c:'var(--acc)',evs:[]}};
+  evs.forEach(function(a){if(a.done)groups.later.evs.push(a);else if(a.due<0)groups.overdue.evs.push(a);else if(a.due===0)groups.today.evs.push(a);else if(a.due<=7)groups.week.evs.push(a);else groups.later.evs.push(a);});
+  ['overdue','today','week','later'].forEach(function(k){
+    var g=groups[k];if(!g.evs.length)return;
+    var hdr=document.createElement('div');hdr.className='grp-hdr';
+    hdr.innerHTML='<div class="grp-stripe" style="background:'+g.c+'"></div><div class="grp-lbl" style="color:'+g.c+'">'+g.l+'</div><div class="grp-cnt" style="background:'+g.c+'22;color:'+g.c+'">'+g.evs.length+'</div>';
+    body.appendChild(hdr);
+    g.evs.forEach(function(a){
+      var uc=a.done?'#00ff88':a.due<0?'#ff4d6d':a.due===0?'#ff8c00':a.due<=2?'#ffc800':'var(--acc)';
+      var dl=a.done?'Submitted':a.due<0?'Overdue':a.due===0?'Due today':a.due===1?'Tomorrow':a.due+'d left';
+      var row=document.createElement('div');row.className='ev-item';
+      row.innerHTML='<div class="ev-stripe" style="background:'+uc+'"></div><div class="ev-chk"><div class="ev-chk-box '+(a.done?'done':'')+'" onclick="td('+a.id+',event)">'+(a.done?'✓':'')+'</div></div><div class="ev-body"><div class="ev-title" style="'+(a.done?'text-decoration:line-through;opacity:0.5':'')+'">'+(a.done?'✓ ':'')+a.title+'</div><div class="ev-meta"><span class="ev-course">'+a.course+'</span><span class="ev-due" style="color:'+uc+';background:'+uc+'18">'+dl+'</span></div></div>';
+      body.appendChild(row);
+    });
+  });
+}
+function td(id,e){e.stopPropagation();var a=assignments.find(function(x){return x.id===id;});if(a){a.done=!a.done;renderSum();renderPipe();}}
+renderSum();renderPipe();
+var ctfs=[
+  {name:'picoCTF 2026',cat:'misc',start:'Mar 22',end:'Mar 29',weight:'50.00',live:false,reg:false},
+  {name:'DEF CON CTF Quals',cat:'pwn',start:'Apr 04',end:'Apr 06',weight:'99.74',live:false,reg:false},
+  {name:'Google CTF 2026',cat:'web',start:'Apr 18',end:'Apr 20',weight:'81.50',live:true,reg:true},
+  {name:'HITCON CTF',cat:'crypto',start:'May 10',end:'May 12',weight:'93.20',live:false,reg:false},
+];
+var catC={misc:'#ffc800',pwn:'#ff5555',web:'#00aaff',crypto:'#b450ff'};
+function renderCTF(){
+  var sum=document.getElementById('ctf-sum'),body=document.getElementById('ctf-body');
+  sum.innerHTML='';body.innerHTML='';
+  var live=ctfs.filter(function(c){return c.live;}),up=ctfs.filter(function(c){return!c.live;}),reg=ctfs.filter(function(c){return c.reg;});
+  [{l:live.length+' Ongoing',c:'#00ff88',bg:'rgba(0,255,136,0.08)'},{l:up.length+' Upcoming',c:'var(--acc)',bg:'rgba(99,102,241,0.08)'},{l:reg.length+' Registered',c:'#ffc800',bg:'rgba(255,200,0,0.08)'}].forEach(function(p){
+    var pill=document.createElement('div');pill.className='sp';pill.innerText=p.l;pill.style.color=p.c;pill.style.background=p.bg;sum.appendChild(pill);
+  });
+  [{label:'ONGOING',color:'#00ff88',evs:live},{label:'UPCOMING',color:'var(--acc)',evs:up}].forEach(function(g){
+    if(!g.evs.length)return;
+    var hdr=document.createElement('div');hdr.className='grp-hdr';hdr.style.margin='7px 0 5px';
+    hdr.innerHTML='<div class="grp-stripe" style="background:'+g.color+'"></div><div class="grp-lbl" style="color:'+g.color+'">'+g.label+'</div><div class="grp-cnt" style="background:'+g.color+'22;color:'+g.color+'">'+g.evs.length+'</div>';
+    body.appendChild(hdr);
+    g.evs.forEach(function(ctf){
+      var cc=catC[ctf.cat]||'#888';
+      var card=document.createElement('div');card.className='ctf-item';
+      card.innerHTML='<div class="ctf-top-stripe" style="background:'+(ctf.live?'#00ff88':cc)+'"></div><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:6px"><div class="ctf-name">'+ctf.name+'</div><div class="ctf-cd" style="color:'+(ctf.live?'#00ff88':'var(--acc)');background:'+(ctf.live?'rgba(0,255,136,0.12)':'rgba(99,102,241,0.1)')+'font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;white-space:nowrap;font-family:var(--mono)">'+( ctf.live?'LIVE':'Starts '+ctf.start)+'</div></div><div style="display:flex;gap:5px;margin-bottom:4px"><span class="ctf-badge" style="background:'+cc+'22;color:'+cc+'">'+ctf.cat.toUpperCase()+'</span><span style="font-size:9px;opacity:0.35;font-weight:700">⭐ '+ctf.weight+'</span></div><div style="font-size:10px;opacity:0.3">'+ctf.start+' → '+ctf.end+'</div><div class="ctf-reg '+(ctf.reg?'reg':'')+'" onclick="toggleReg(\''+ctf.name+'\',this)">'+( ctf.reg?'✓ Registered':'+ Register')+'</div>';
+      body.appendChild(card);
+    });
+  });
+}
+function toggleReg(name,el){var c=ctfs.find(function(x){return x.name===name;});if(c){c.reg=!c.reg;renderCTF();}}
+renderCTF();
+var links=[{name:'GitHub',icon:'⬡',cat:'Dev'},{name:'ChatGPT',icon:'◈',cat:'AI'},{name:'CTFtime',icon:'⚑',cat:'CTF'},{name:'Notion',icon:'◻',cat:'Notes'},{name:'Overleaf',icon:'✎',cat:'Docs'},{name:'HackTheBox',icon:'⬡',cat:'CTF'}];
+function renderLinks(){var g=document.getElementById('links-grid');g.innerHTML='';links.forEach(function(l){var item=document.createElement('div');item.className='link-item';item.innerHTML='<div class="link-icon">'+l.icon+'</div><div><div class="link-name">'+l.name+'</div><div class="link-cat">'+l.cat+'</div></div>';g.appendChild(item);});}
+renderLinks();
+function addLink(){links.push({name:'New Link',icon:'◈',cat:'Custom'});renderLinks();}
+var aiR=['Based on your assignments, the Network Security Lab Report is due TODAY. Tackle that first — it has the most urgency.','This week: 1 due today, 1 tomorrow, 1 in 2 days, 2 more later. Want a study plan?','Top priority: Network Security Lab → Algorithm Analysis → Linear Algebra. Ordered by due date.','I searched your vault and found 3 relevant notes. Most useful: Cybersecurity Notes from last semester.'],aiI=0;
+function sendAI(){var inp=document.getElementById('ai-inp'),q=inp.value.trim();if(!q)return;var out=document.getElementById('ai-out');out.style.display='block';out.innerHTML='<div class="ai-typing"><span></span><span></span><span></span></div>';inp.value='';var r=aiR[aiI%aiR.length];aiI++;setTimeout(function(){out.innerHTML='<span style="font-size:9px;color:var(--acc);font-family:var(--mono);display:block;margin-bottom:3px">ZEN-OS / Groq</span>'+r;},1000);}
+function quickAsk(el,q){document.getElementById('ai-inp').value=q;sendAI();}
+function showMsg(m){var out=document.getElementById('ai-out');out.style.display='block';out.innerHTML='<span style="font-size:9px;opacity:0.4;display:block;margin-bottom:3px">SYSTEM</span>'+m;}
+document.getElementById('ai-inp').addEventListener('keydown',function(e){if(e.key==='Enter')sendAI();});
+<\/script></body></html>`;
+
+const frame = document.getElementById('preview-frame');
+const doc = frame.contentDocument || frame.contentWindow.document;
+doc.open(); doc.write(previewHTML); doc.close();
+</script>
+</body>
+</html>
