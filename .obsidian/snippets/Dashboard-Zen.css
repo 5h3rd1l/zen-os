@@ -1,0 +1,668 @@
+/* 
+   Dashboard-Zen-OS.css
+   Professional Edition — Refined Dark
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root {
+    --zos-bg:             var(--background-primary);
+    --zos-card-bg:        rgba(255,255,255,0.028);
+    --zos-card-bg-hover:  rgba(255,255,255,0.042);
+    --zos-accent:         #6366f1;
+    --zos-accent-rgb:     99, 102, 241;
+    --zos-text-muted:     var(--text-muted);
+    --zos-border-radius:  20px;
+    --zos-spacing:        28px;
+    --zos-glass:          rgba(255,255,255,0.025);
+    --zos-border:         1px solid rgba(255,255,255,0.065);
+    --zos-border-subtle:  1px solid rgba(255,255,255,0.04);
+    --zos-shadow:         0 1px 3px rgba(0,0,0,0.12), 0 8px 32px rgba(0,0,0,0.18);
+    --zos-shadow-hover:   0 2px 8px rgba(0,0,0,0.16), 0 16px 48px rgba(0,0,0,0.22);
+
+    --zos-font-main:  'DM Sans', sans-serif;
+    --zos-font-head:  'Syne', sans-serif;
+    --zos-font-ser:   'DM Sans', sans-serif;
+    --zos-font-mono:  'JetBrains Mono', monospace;
+
+    /* Subtle glow accent */
+    --zos-glow: rgba(var(--zos-accent-rgb), 0.12);
+}
+
+/* ── BASE ──────────────────────────────────────────────────── */
+.zos-dashboard {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: var(--zos-spacing);
+    font-family: var(--zos-font-main);
+    color: var(--text-normal);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ────────────────────────────────────────────────── */
+.zos-header {
+    background: var(--zos-glass);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-radius: 24px;
+    padding: 32px 36px;
+    border: var(--zos-border);
+    margin-bottom: var(--zos-spacing);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--zos-shadow);
+}
+
+/* Ambient glow — top left */
+.zos-header::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: -60px;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(var(--zos-accent-rgb), 0.07), transparent 65%);
+    pointer-events: none;
+}
+
+/* Ambient glow — bottom right */
+.zos-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    right: -40px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(var(--zos-accent-rgb), 0.05), transparent 65%);
+    pointer-events: none;
+}
+
+.zos-hero-text {
+    flex-grow: 1;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── BANNER TITLE ──────────────────────────────────────────── */
+.zos-hero-text h1 {
+    font-family: var(--zos-font-head) !important;
+    font-size: 5.2em !important;
+    font-weight: 800 !important;
+    margin: 0 0 2px !important;
+    line-height: 0.92 !important;
+    letter-spacing: -3px !important;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.95) 0%,
+        rgba(255,255,255,0.55) 60%,
+        rgba(var(--zos-accent-rgb), 0.7) 100%
+    ) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    display: block !important;
+}
+
+/* ── BANNER SETTINGS ───────────────────────────────────────── */
+.zos-banner-settings-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-normal);
+    z-index: 10;
+    padding: 4px;
+    border-radius: 6px;
+}
+.zos-banner-settings-btn:hover {
+    opacity: 1;
+    color: var(--zos-accent);
+}
+.zos-banner-settings-btn svg { width: 15px; height: 15px; }
+
+/* ── STAT CUBES ────────────────────────────────────────────── */
+.zos-hero-stats {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.zos-stat-cube {
+    text-align: right;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    border: var(--zos-border-subtle);
+    min-width: 110px;
+    transition: background 0.2s, border-color 0.2s;
+}
+.zos-stat-cube:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.zos-stat-val {
+    font-family: var(--zos-font-head);
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--zos-accent);
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.zos-stat-lab {
+    font-size: 0.6em;
+    font-family: var(--zos-font-mono);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.38;
+}
+
+/* ── GRID ──────────────────────────────────────────────────── */
+.zos-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--zos-spacing);
+}
+
+.zos-col-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.zos-card-shell {
+    min-width: 0;
+    position: relative;
+}
+
+/* ── CARDS ─────────────────────────────────────────────────── */
+.zos-card {
+    background: var(--zos-card-bg);
+    border-radius: var(--zos-border-radius);
+    padding: 26px;
+    border: var(--zos-border);
+    box-shadow: var(--zos-shadow);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle top shine on cards */
+.zos-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+    pointer-events: none;
+}
+
+.zos-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--zos-shadow-hover);
+    background: var(--zos-card-bg-hover);
+}
+
+.zos-card-title {
+    font-size: 0.8em;        /* change to 1em */
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--zos-text-muted);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Objective card text */
+.zos-card [contenteditable] {
+    font-family: 'Georgia', 'Times New Roman', serif !important;
+    font-size: 2em;
+    line-height: 1.15;
+    color: rgba(255, 255, 255, 0.85) !important;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ── CLOCK CARD ────────────────────────────────────────────── */
+.zos-clock-card {
+    background: linear-gradient(
+        145deg,
+        rgba(var(--zos-accent-rgb), 0.06) 0%,
+        rgba(255,255,255,0.02) 60%
+    );
+}
+
+.zos-clock-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--zos-accent-rgb), 0.09), transparent 70%);
+    pointer-events: none;
+}
+
+/* ── RESIZE HANDLE ─────────────────────────────────────────── */
+.zos-resize-handle {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    bottom: 10px;
+    width: 14px;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: ew-resize;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.zos-resize-handle:hover,
+.zos-card-shell.is-resizing .zos-resize-handle { opacity: 1; }
+
+.zos-resize-grip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    color: var(--zos-text-muted);
+    font-size: 1.1em;
+    transition: color 0.2s;
+}
+.zos-card-shell.is-resizing .zos-card { transition: none; }
+.zos-card-shell.is-resizing .zos-resize-grip,
+.zos-resize-handle:hover .zos-resize-grip { color: var(--zos-accent); }
+.zos-card-shell:not(.zos-resizable-card) .zos-resize-handle { display: none; }
+
+/* ── COLUMN SPANS ──────────────────────────────────────────── */
+.span-4  { grid-column: span 4; }
+.span-8  { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+@media (max-width: 1100px) {
+    .span-4, .span-8 { grid-column: span 12; }
+    .zos-col-grid    { grid-template-columns: 1fr; }
+    .zos-card-shell  { grid-column: 1 / -1; }
+    .zos-resize-handle { display: none; }
+}
+
+/* ── TASK ROW ──────────────────────────────────────────────── */
+.zos-task-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.02);
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+    transition: background 0.2s, border-color 0.2s;
+}
+.zos-task-row:hover {
+    border-color: rgba(var(--zos-accent-rgb), 0.25);
+    background: rgba(var(--zos-accent-rgb), 0.04);
+}
+
+.zos-task-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid rgba(var(--zos-accent-rgb), 0.5);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.zos-task-tag {
+    font-family: var(--zos-font-mono);
+    font-size: 0.62em;
+    padding: 3px 9px;
+    border-radius: 100px;
+    background: rgba(var(--zos-accent-rgb), 0.08);
+    color: var(--zos-accent);
+    letter-spacing: 0.3px;
+}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────── */
+.zos-task-scroll::-webkit-scrollbar,
+[style*="overflow-y: auto"]::-webkit-scrollbar {
+    width: 3px;
+}
+[style*="overflow-y: auto"]::-webkit-scrollbar-track { background: transparent; }
+[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
+    background: rgba(var(--zos-accent-rgb), 0.2);
+    border-radius: 3px;
+}
+[style*="overflow-y: auto"]::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--zos-accent-rgb), 0.45);
+}
+
+/* ── EMPTY STATE ───────────────────────────────────────────── */
+.zos-hint {
+    padding: 36px;
+    text-align: center;
+    background: rgba(var(--zos-accent-rgb), 0.04);
+    border-radius: 16px;
+    border: 1px dashed rgba(var(--zos-accent-rgb), 0.25);
+    color: rgba(var(--zos-accent-rgb), 0.8);
+    font-size: 0.84em;
+    letter-spacing: 0.3px;
+}
+
+/* ── ACTION BUTTONS ────────────────────────────────────────── */
+.zos-action-btn {
+    padding: 18px 10px 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.025);
+    border: var(--zos-border-subtle);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.25s ease;
+    cursor: pointer;
+}
+.zos-action-btn:hover {
+    background: rgba(var(--zos-accent-rgb), 0.1);
+    border-color: rgba(var(--zos-accent-rgb), 0.28);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(var(--zos-accent-rgb), 0.12);
+}
+.zos-action-btn svg {
+    width: 20px;
+    height: 20px;
+    color: rgba(var(--zos-accent-rgb), 0.7);
+    transition: color 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.zos-action-btn:hover svg {
+    color: var(--zos-accent);
+    transform: scale(1.15);
+}
+
+/* ── PIPELINE BADGES ───────────────────────────────────────── */
+.zos-task-source-indicator {
+    font-family: var(--zos-font-mono);
+    font-size: 0.58em;
+    padding: 2px 8px;
+    background: rgba(var(--zos-accent-rgb), 0.08);
+    color: var(--zos-accent);
+    border-radius: 5px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.zos-settings-btn {
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    border-radius: 5px;
+}
+.zos-settings-btn:hover { opacity: 1; color: var(--zos-accent); }
+
+.zos-control-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.zos-control-label {
+    font-family: var(--zos-font-mono);
+    font-size: 0.58em;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    opacity: 0.32;
+    font-weight: 500;
+}
+
+.zos-control-value {
+    font-family: var(--zos-font-mono);
+    font-size: 0.6em;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 7px;
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.zos-control-value:hover {
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.75);
+}
+
+.zos-control-value-accent {
+    background: rgba(var(--zos-accent-rgb), 0.08);
+    color: var(--zos-accent);
+    border-color: rgba(var(--zos-accent-rgb), 0.18);
+}
+.zos-control-value-accent:hover {
+    background: rgba(var(--zos-accent-rgb), 0.15);
+    border-color: rgba(var(--zos-accent-rgb), 0.3);
+}
+
+/* ── FOOTER ────────────────────────────────────────────────── */
+.zos-footer {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 48px;
+    opacity: 0.2;
+    font-family: var(--zos-font-mono);
+    font-size: 0.65em;
+    letter-spacing: 4px;
+}
+
+/* ── LINKS CARD SCROLLBAR ──────────────────────────────────── */
+.zos-right-card [style*="overflow-y:auto"]::-webkit-scrollbar { width: 3px; }
+
+/* ── MODAL SYSTEM ──────────────────────────────────────────── */
+.zos-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.zos-modal {
+    background: var(--zos-card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+    width: 380px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Modal top edge highlight */
+.zos-modal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+.zos-modal-title {
+    font-family: var(--zos-font-mono);
+    font-size: 0.62em;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 20px;
+}
+
+.zos-modal-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.09) !important;
+    border-radius: 11px !important;
+    padding: 13px 15px !important;
+    color: rgba(255,255,255,0.9) !important;
+    font-family: var(--zos-font-main) !important;
+    font-size: 0.95em !important;
+    outline: none !important;
+    margin-bottom: 20px !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.15s, background 0.15s !important;
+}
+.zos-modal-input:focus {
+    border-color: rgba(var(--zos-accent-rgb), 0.45) !important;
+    background: rgba(var(--zos-accent-rgb), 0.05) !important;
+}
+
+.zos-modal-btns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.zos-modal-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.zos-modal-btn {
+    padding: 11px;
+    border-radius: 11px;
+    font-family: var(--zos-font-main);
+    font-weight: 600;
+    font-size: 0.78em;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.18s ease;
+    border: none;
+}
+
+.zos-btn-save {
+    background: var(--zos-accent);
+    color: white;
+    box-shadow: 0 2px 12px rgba(var(--zos-accent-rgb), 0.3);
+}
+.zos-btn-save:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(var(--zos-accent-rgb), 0.4);
+}
+
+.zos-btn-cancel {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.07) !important;
+}
+.zos-btn-cancel:hover {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.8);
+}
+
+.zos-btn-delete {
+    background: rgba(255,85,85,0.07);
+    color: rgba(255,85,85,0.75);
+    border: 1px solid rgba(255,85,85,0.15) !important;
+}
+.zos-btn-delete:hover {
+    background: rgba(255,85,85,0.14);
+    color: #ff5555;
+    border-color: rgba(255,85,85,0.3) !important;
+}
+
+/* ── WIDE MODE ─────────────────────────────────────────────── */
+.zos-wide .markdown-preview-view,
+.zos-wide .cm-editor { max-width: 100% !important; padding: 0 !important; }
+.zos-wide .markdown-preview-section { max-width: 100% !important; }
+.zos-wide .markdown-preview-view .markdown-preview-section > div { max-width: 100% !important; }
+.zos-wide.is-readable-line-width .markdown-preview-view {
+    max-width: 100% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+/* ── ANIMATIONS ────────────────────────────────────────────── */
+.animate-in {
+    animation: zos-slide-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes zos-slide-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zos-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes zos-scale-in {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── STAGGERED CARD ENTRANCE ───────────────────────────────── */
+.zos-left-card:nth-child(1) .zos-card  { animation: zos-slide-up 0.6s 0.05s cubic-bezier(0.22,1,0.36,1) backwards; }
+.zos-left-card:nth-child(2) .zos-card  { animation: zos-slide-up 0.6s 0.12s cubic-bezier(0.22,1,0.36,1) backwards; }
+.zos-left-card:nth-child(3) .zos-card  { animation: zos-slide-up 0.6s 0.19s cubic-bezier(0.22,1,0.36,1) backwards; }
+.zos-right-card:nth-child(1) .zos-card { animation: zos-slide-up 0.6s 0.08s cubic-bezier(0.22,1,0.36,1) backwards; }
+.zos-right-card:nth-child(2) .zos-card { animation: zos-slide-up 0.6s 0.16s cubic-bezier(0.22,1,0.36,1) backwards; }
+
+/* ── FOCUS RING ON INPUTS ──────────────────────────────────── */
+input:focus-visible,
+textarea:focus-visible {
+    outline: none;
+}
+
+/* ── MATERIAL VIEWER MODAL ─────────────────────────────────── */
+.zos-modal-overlay .zos-material-modal {
+    width: min(920px, 96vw) !important;
+    height: 92vh !important;
+    max-height: 92vh !important;
+    border-radius: 16px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* ── MATERIAL VIEWER OVERRIDE ──────────────────────────────── */
+.zos-modal-overlay {
+    align-items: center !important;
+}
+
