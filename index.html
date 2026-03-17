@@ -145,6 +145,23 @@
   .sticky-dl.show { transform: translateY(0); opacity: 1; pointer-events: all; }
   .sticky-dl:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,255,136,0.5); }
 
+  .legal-section { padding: 80px 0; }
+  .legal-section h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; margin: 28px 0 14px 0; }
+  .legal-section h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; margin: 16px 0 8px 0; }
+  .legal-section p { font-size: 0.95rem; line-height: 1.7; margin-bottom: 14px; color: var(--muted); }
+  .legal-section ul { margin-left: 20px; margin-bottom: 14px; }
+  .legal-section li { margin-bottom: 6px; font-size: 0.95rem; color: var(--muted); }
+  .legal-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+  .legal-modal { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+  .legal-modal.open { display: flex; opacity: 1; }
+  .legal-modal-content { background: var(--bg); border: 1px solid var(--glass-border); border-radius: 20px; max-width: 800px; max-height: 85vh; overflow-y: auto; padding: 40px; position: relative; }
+  .legal-close { position: absolute; top: 20px; right: 20px; background: var(--card); border: 1px solid var(--card-border); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: all 0.2s; }
+  .legal-close:hover { background: var(--glass-hover); }
+  .legal-modal-content h1 { margin-bottom: 8px; }
+  .legal-modal-content h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; margin: 20px 0 10px 0; }
+  .legal-modal-content h3 { font-family: 'Syne', sans-serif; font-weight: 700; margin: 12px 0 6px 0; }
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
   .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -370,8 +387,204 @@
         <div class="install-note"><strong>⚠ Requires:</strong> Obsidian + Dataview plugin with JavaScript Queries enabled. Google account optional but recommended.</div>
       </div>
     </div>
-  </div>
 </section>
+
+<!-- HIDDEN PRIVACY POLICY MODAL -->
+<div id="privacy-modal" class="legal-modal">
+  <div class="legal-modal-content">
+    <div class="legal-close" onclick="closeModal('privacy-modal')">×</div>
+    <h1 style="margin-bottom: 8px;">Privacy Policy</h1>
+    <p class="legal-subtitle">Last Updated: March 17, 2026</p>
+
+    <h2>1. Introduction</h2>
+    <p>This Privacy Policy explains how zen-os powered by Google Workspace Obsidian ("we," "our," or "us") collects, uses, discloses, and safeguards your information when you use our web application, including any related features and functionalities.</p>
+
+    <h2>2. Information We Collect</h2>
+    <h3>2.1 Information You Provide Directly</h3>
+    <ul>
+      <li><strong>Google Account Information:</strong> When you sign in via Google OAuth, we receive your email address, name, and profile picture (optional)</li>
+      <li><strong>User-Generated Data:</strong> Any content, notes, or files you create or upload through the app</li>
+      <li><strong>Preferences & Settings:</strong> Your app configurations and preferences</li>
+    </ul>
+
+    <h3>2.2 Information Collected Automatically</h3>
+    <ul>
+      <li><strong>Usage Data:</strong> Pages visited, features used, time spent in the app</li>
+      <li><strong>Device Information:</strong> Browser type, device type, IP address</li>
+      <li><strong>Cookies & Local Storage:</strong> We use browser storage to maintain your session and preferences</li>
+    </ul>
+
+    <h2>3. How We Use Your Information</h2>
+    <p>We use the information we collect to:</p>
+    <ul>
+      <li>Authenticate you securely via Google OAuth</li>
+      <li>Provide, maintain, and improve our services</li>
+      <li>Personalize your experience</li>
+      <li>Analyze usage patterns to enhance features</li>
+      <li>Comply with legal obligations</li>
+      <li>Prevent fraud and ensure security</li>
+    </ul>
+
+    <h2>4. Data Sharing & Third Parties</h2>
+    <p>We do <strong>not</strong> sell your personal data. However, we may share information with:</p>
+    <ul>
+      <li><strong>Google:</strong> For authentication and Drive/Calendar access (per your OAuth permissions)</li>
+      <li><strong>Service Providers:</strong> Analytics, hosting, and support services</li>
+      <li><strong>Legal Requests:</strong> When required by law or court orders</li>
+    </ul>
+
+    <h2>5. Data Security</h2>
+    <p>We implement industry-standard security measures, including:</p>
+    <ul>
+      <li>HTTPS encryption for all data in transit</li>
+      <li>Secure OAuth 2.0 for authentication</li>
+      <li>Limited data retention</li>
+      <li>Regular security audits</li>
+    </ul>
+    <p>However, no method of transmission is 100% secure. We cannot guarantee absolute security.</p>
+
+    <h2>6. Your Rights & Choices</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li>Access your personal data</li>
+      <li>Request deletion of your data</li>
+      <li>Revoke Google OAuth permissions at any time</li>
+      <li>Opt out of analytics tracking</li>
+    </ul>
+    <p>To exercise these rights, contact: <strong>rubasali.paf@gmail.com</strong></p>
+
+    <h2>7. Data Retention</h2>
+    <p>We retain your data only as long as:</p>
+    <ul>
+      <li>Your account is active</li>
+      <li>Required by law</li>
+      <li>Necessary to provide services</li>
+    </ul>
+    <p>Upon account deletion, we remove your data within 30 days, except where legally required to retain.</p>
+
+    <h2>8. Third-Party Links</h2>
+    <p>Our app may integrate with third-party services (Google Workspace, AI providers). Review their privacy policies separately—we are not responsible for their practices.</p>
+
+    <h2>9. Children's Privacy</h2>
+    <p>Our service is not intended for children under 13. We do not knowingly collect data from children. If we learn we have, we will delete it promptly.</p>
+
+    <h2>10. Updates to This Policy</h2>
+    <p>We may update this Privacy Policy periodically. We will notify you of significant changes via email or a prominent notice on our website.</p>
+
+    <h2>11. Contact Us</h2>
+    <p>For privacy concerns or questions:</p>
+    <ul>
+      <li><strong>Email:</strong> rubasali.paf@gmail.com</li>
+      <li><strong>Location:</strong> Islamabad, Pakistan</li>
+    </ul>
+  </div>
+</div>
+
+<!-- HIDDEN TERMS OF SERVICE MODAL -->
+<div id="terms-modal" class="legal-modal">
+  <div class="legal-modal-content">
+    <div class="legal-close" onclick="closeModal('terms-modal')">×</div>
+    <h1 style="margin-bottom: 8px;">Terms of Service</h1>
+    <p class="legal-subtitle">Last Updated: March 17, 2026</p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>By accessing and using zen-os powered by Google Workspace Obsidian ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use this Service.</p>
+
+    <h2>2. Service Description</h2>
+    <p>zen-os powered by Google Workspace Obsidian is a personal productivity platform that integrates Google Workspace (Calendar, Drive, Gmail) with Obsidian to provide unified workspace management and note-taking. The Service is provided on an "AS IS" and "AS AVAILABLE" basis.</p>
+
+    <h2>3. User Accounts & Eligibility</h2>
+    <ul>
+      <li>You must be at least 13 years old to use this Service</li>
+      <li>You must have a valid Google account to sign in</li>
+      <li>You are responsible for maintaining the confidentiality of your credentials</li>
+      <li>You agree to provide accurate information during authentication</li>
+      <li>You are liable for all activities under your account</li>
+    </ul>
+
+    <h2>4. Acceptable Use Policy</h2>
+    <p>You agree <strong>not</strong> to:</p>
+    <ul>
+      <li>Violate any laws or regulations</li>
+      <li>Infringe on intellectual property rights</li>
+      <li>Upload malware, viruses, or harmful code</li>
+      <li>Attempt to access unauthorized areas</li>
+      <li>Harass, threaten, or defame others</li>
+      <li>Engage in automated scraping or bulk downloads</li>
+      <li>Reverse engineer or modify the Service</li>
+      <li>Use the Service for commercial purposes without permission</li>
+    </ul>
+
+    <h2>5. User Content & Rights</h2>
+    <h3>5.1 Your Content</h3>
+    <ul>
+      <li>You retain all rights to content you create in the Service</li>
+      <li>By using the Service, you grant us a license to store, process, and display your content</li>
+      <li>You are solely responsible for your content and comply with all laws</li>
+    </ul>
+
+    <h3>5.2 Our Content</h3>
+    <ul>
+      <li>All Service content (design, code, logos, text) is owned by Ruba Sali (personal developer)</li>
+      <li>You may not copy, modify, or distribute our content without permission</li>
+    </ul>
+
+    <h2>6. Limitation of Liability</h2>
+    <p><strong>TO THE MAXIMUM EXTENT PERMITTED BY LAW:</strong></p>
+    <ul>
+      <li>We are not liable for indirect, incidental, special, or consequential damages</li>
+      <li>Our liability is limited to the amount you have paid (if any) in the past 30 days, or $0 if no payment was made</li>
+      <li>We do not warrant the Service is error-free or always available</li>
+      <li>Use of this Service is at your own risk</li>
+    </ul>
+
+    <h2>7. Disclaimer of Warranties</h2>
+    <p>The Service is provided "AS IS" without warranties of any kind. We disclaim:</p>
+    <ul>
+      <li>Merchantability and fitness for a particular purpose</li>
+      <li>Non-infringement of third-party rights</li>
+      <li>Availability, reliability, or accuracy of the Service</li>
+    </ul>
+
+    <h2>8. Indemnification</h2>
+    <p>You agree to indemnify and hold harmless Ruba Sali (the developer) from any claims arising from:</p>
+    <ul>
+      <li>Your use of the Service</li>
+      <li>Your violation of these Terms</li>
+      <li>Your infringement of others' rights</li>
+    </ul>
+
+    <h2>9. Termination</h2>
+    <p>We reserve the right to terminate or suspend your account if you:</p>
+    <ul>
+      <li>Violate these Terms</li>
+      <li>Engage in illegal activities</li>
+      <li>Pose a security risk</li>
+    </ul>
+    <p>You may terminate your account at any time by deleting it in your account settings.</p>
+
+    <h2>10. Privacy</h2>
+    <p>Your use of the Service is governed by our <a href="#privacy">Privacy Policy</a>. Please review it to understand our practices.</p>
+
+    <h2>11. Third-Party Services</h2>
+    <p>The Service may integrate with third-party services (Google, AI providers, etc.). We are not responsible for their terms, policies, or actions. Use at your own risk.</p>
+
+    <h2>12. Changes to Terms</h2>
+    <p>We may update these Terms periodically. Continued use of the Service constitutes acceptance of changes.</p>
+
+    <h2>13. Governing Law</h2>
+    <p>These Terms are governed by the laws of Islamabad, Pakistan, without regard to conflicts of law principles.</p>
+
+    <h2>14. Dispute Resolution</h2>
+    <p>Any disputes shall first be resolved through good faith negotiation. If unresolved, disputes shall be subject to binding arbitration or litigation as applicable in Islamabad, Pakistan.</p>
+
+    <h2>15. Contact</h2>
+    <p>For questions about these Terms:</p>
+    <ul>
+      <li><strong>Email:</strong> rubasali.paf@gmail.com</li>
+    </ul>
+  </div>
+</div>
 
 <footer>
   <div class="container">
@@ -384,6 +597,8 @@
         <a href="https://github.com/5h3rd1l/zen-os" target="_blank">GitHub</a>
         <a href="https://github.com/5h3rd1l/zen-os/releases" target="_blank">Releases</a>
         <a href="https://github.com/5h3rd1l/zen-os/blob/main/README.md" target="_blank">Docs</a>
+        <a href="?policy=privacy" style="cursor:pointer;">Privacy Policy</a>
+        <a href="?policy=terms" style="cursor:pointer;">Terms of Service</a>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
         <a href="https://github.com/5h3rd1l/zen-os" target="_blank">
@@ -749,6 +964,53 @@ steps.forEach(s => {
   document.getElementById('zstats').onclick=function(){var out=document.getElementById('zaout');out.style.display='block';out.innerHTML='<span style="font-size:9px;opacity:0.4;display:block;margin-bottom:3px">VAULT STATS</span>247 notes | 18 folders | Top folder: CS401 (34 notes)';};
 
 })();
+
+// Modal functions
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('open');
+    document.body.style.overflow = 'auto';
+  }
+}
+
+// Check URL parameters on page load
+window.addEventListener('load', function() {
+  const params = new URLSearchParams(window.location.search);
+  const policy = params.get('policy');
+  
+  if (policy === 'privacy') {
+    openModal('privacy-modal');
+  } else if (policy === 'terms') {
+    openModal('terms-modal');
+  }
+});
+
+// Close modal when clicking outside the content
+document.querySelectorAll('.legal-modal').forEach(modal => {
+  modal.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeModal(this.id);
+    }
+  });
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.legal-modal.open').forEach(modal => {
+      closeModal(modal.id);
+    });
+  }
+});
 </script>
 <a href="https://github.com/5h3rd1l/zen-os/releases/latest/download/zen-os-v3.0.zip" class="sticky-dl" id="sticky-dl">⬇ Download Free</a>
 </body>
