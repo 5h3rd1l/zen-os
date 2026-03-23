@@ -5,6 +5,25 @@
 
 ---
 
+> 📦 **[Download ZEN-OS v5.0](https://github.com/5h3rd1l/zen-os/releases/latest/download/zen-os-v5.0.zip)** — unzip and copy into your vault. That's it.
+
+![ZEN-OS Dashboard](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/1.jpeg)
+
+<details>
+<summary>📸 More Screenshots</summary>
+<br>
+
+| | |
+|---|---|
+| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/2.jpeg) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/3.jpeg) |
+| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/4.png) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/5.png) |
+| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/6.jpeg) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/7.jpeg) |
+| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/8.jpeg) | |
+
+</details>
+
+---
+
 ## Features
 
 - **Assignment Pipeline** — Syncs all Google Classroom assignments with due dates, live countdowns, urgency coloring, priority levels, and calendar view
@@ -190,9 +209,11 @@ The dashboard reads this file on every load and registers them as AI providers a
 
 ## Credits
 
-Built with Obsidian, Dataview, and the Google Workspace plugin.
-Fonts: Syne, DM Sans, JetBrains Mono.
-CTF data from CTFtime.org.
+Built with [Obsidian](https://obsidian.md), [Dataview](https://github.com/blacksmithgu/obsidian-dataview), and the [Google Calendar Plugin](https://github.com/YukiGasai/obsidian-google-calendar).
+
+Fonts: [Syne](https://fonts.google.com/specimen/Syne), [DM Sans](https://fonts.google.com/specimen/DM+Sans), [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono).
+
+CTF data from [CTFtime.org](https://ctftime.org).
 
 ---
 
