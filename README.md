@@ -7,7 +7,7 @@
 
 > 📦 **[Download ZEN-OS v5.0](https://github.com/5h3rd1l/zen-os/releases/latest/download/zen-os-v5.0.zip)** — unzip and copy into your vault. That's it.
 
-![ZEN-OS Dashboard](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/1.jpeg)
+![ZEN-OS Dashboard](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/1.png)
 
 <details>
 <summary>📸 More Screenshots</summary>
@@ -15,10 +15,10 @@
 
 | | |
 |---|---|
-| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/2.jpeg) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/3.jpeg) |
+| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/2.png) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/3.png) |
 | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/4.png) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/5.png) |
-| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/6.jpeg) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/7.jpeg) |
-| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/8.jpeg) | |
+| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/6.png) | ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/7.png) |
+| ![](https://raw.githubusercontent.com/5h3rd1l/zen-os/assets/assets/8.png) | |
 
 </details>
 
